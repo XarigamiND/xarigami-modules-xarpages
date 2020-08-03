@@ -1,0 +1,76 @@
+<div class="xar-mod-page">
+    <div class="xar-mod-head">
+        <xar:if condition="!xarRequestIsAJAX()">
+            <xar:template type="module" module="base" file="admin-menu" />
+        </xar:if>
+    </div>
+    <div class="xar-mod-body">
+        <h1>
+            <xar:if condition="$func eq 'modify'">
+                <xar:mlstring>Modify Page Type</xar:mlstring>
+            <xar:else />
+                <xar:mlstring>Create New Page Type</xar:mlstring>
+            </xar:if>
+        </h1>
+        <div class="xar-mod-content">
+            <xar:comment>Either modifying a page, or we have a page type</xar:comment>
+            <form class="xar-xarpages-admin" action="#xarModURL('xarpages','admin','updatetype')#" method="post">
+                <fieldset>
+                    <legend>
+                        <strong><xar:mlstring>Page Type Attributes</xar:mlstring></strong>
+                    </legend>
+                    <div class="xar-form-input-wrapper">
+                        <label for="name" class="xar-form-label"><xar:mlstring>Name</xar:mlstring></label>
+                        <input type="text" name="name" id="name" value="#xarVarPrepForDisplay($type['name'])#" size="32" maxlength="64" />
+                        <xar:if condition="empty($ptid) and !empty($files)">
+                            <xar:data-input name="name_list" id="name_list" type="6" validation="$files" value="" />
+                        </xar:if>
+                        <xar:if condition="isset($invalid['name']) and !empty($invalid['name'])">
+                            <div class="xar-error xar-form-input-wrapper-after">#$invalid['name']#</div>
+                        </xar:if>
+                    </div>
+
+                    <div class="xar-form-input-wrapper">
+                        <label for="desc" class="xar-form-label"><xar:mlstring>Description</xar:mlstring></label>
+                        <textarea name="desc" id="desc" cols="40" rows="6" maxlength="255" style="width: 80%;">#xarVarPrepForDisplay($type['desc'])#</textarea>
+                    </div>
+                </fieldset>
+
+                <xar:if condition="!empty($modifyhooks)">
+                    <fieldset>
+                        <legend>
+                            <strong><xar:mlstring>Modify Hooks (applies to all page types)</xar:mlstring></strong>
+                        </legend>
+                        <xar:loop name="$modifyhooks">
+                            #$loop:item#
+                        </xar:loop>
+                    </fieldset>
+                </xar:if>
+
+                <xar:if condition="!empty($confighooks)">
+                    <fieldset>
+                        <legend>
+                            <strong><xar:mlstring>Config Hooks (applies to all pages of this type)</xar:mlstring></strong>
+                        </legend>
+                        <xar:loop name="$confighooks">
+                            #$loop:item#
+                        </xar:loop>
+                    </fieldset>
+                </xar:if>
+
+                <div class="xar-form-footer">
+                    <input type="hidden" name="authid" id="authid" value="#xarSecGenAuthKey()#" />
+                    <input type="hidden" name="ptid" id="ptid" value="#$ptid#" />
+                    <xar:if condition="$func eq 'modify'">
+                        <input type="submit" value="#xarML('Modify Page Type')#" />
+                        <input type="hidden" name="creating" id="creating" value="false"/>
+                    <xar:else />
+                        <input type="submit" value="#xarML('Add Page Type')#" />
+                        <input type="hidden" name="creating" id="creating" value="true"/>
+                    </xar:if>
+                    <input type="hidden" name="return_url" id="return_url" value="#$return_url#"/>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,62 @@
+<object name="xarpages_facet">
+  <objectid>111</objectid>
+  <label>Xarpages_Facet</label>
+  <moduleid>160</moduleid>
+  <itemtype>12</itemtype>
+  <urlparam>itemid</urlparam>
+  <maxid>0</maxid>
+  <config></config>
+  <isalias>1</isalias>
+  <properties>
+    <property name="body">
+      <id>664</id>
+      <label>Body (HTML)</label>
+      <type>xartinymce</type>
+      <default></default>
+      <source>dynamic_data</source>
+      <status>1</status>
+      <order>10</order>
+      <validation></validation>
+    </property>
+    <property name="menu_title">
+      <id>665</id>
+      <label>Menu Title</label>
+      <type>textbox</type>
+      <default></default>
+      <source>dynamic_data</source>
+      <status>1</status>
+      <order>20</order>
+      <validation></validation>
+    </property>
+    <property name="page_title">
+      <id>666</id>
+      <label>Page Title</label>
+      <type>textbox</type>
+      <default></default>
+      <source>dynamic_data</source>
+      <status>1</status>
+      <order>30</order>
+      <validation></validation>
+    </property>
+    <property name="publication_type">
+      <id>667</id>
+      <label>Publication Type</label>
+      <type>itemtype</type>
+      <default></default>
+      <source>dynamic_data</source>
+      <status>1</status>
+      <order>40</order>
+      <validation>articles::1</validation>
+    </property>
+    <property name="forced_cids">
+      <id>668</id>
+      <label>Forced CIDs</label>
+      <type>textbox</type>
+      <default></default>
+      <source>dynamic_data</source>
+      <status>1</status>
+      <order>50</order>
+      <validation></validation>
+    </property>
+  </properties>
+</object>

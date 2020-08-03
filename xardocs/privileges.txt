@@ -1,0 +1,64 @@
+
+Privileges for the xarpages module
+==================================
+
+The components are:
+
+page            A page, identified by a unique ID and a non-unique name.
+pagetype        A page itemtype, identified by a unique ID and a unique name.
+
+The instances for the page component are (in order):
+
+page_name       SELECT DISTINCT xar_name FROM [xar_]xarpages_pages
+type_name       SELECT xar_name FROM [xar_]xarpages_types
+page_id         ** SELECT xar_pid FROM [xar_]xarpages_pages
+type_id         ** SELECT xar_ptid FROM [xar_]xarpages_types
+** not implemented
+
+The instances for the pagetype component are (in order):
+
+type_name       SELECT xar_name FROM [xar_]xarpages_types
+type_id         ** SELECT xar_ptid FROM [xar_]xarpages_types
+** not implemented
+
+The masks (with explicit user functions) for the page component are:
+
+ACCESS_OVERVIEW 
+ACCESS_READ     ReadPage        A page can be viewed (user display).
+ACCESS_COMMENT  
+ACCESS_MODERATE ModeratePage    Overview of pages allowed.
+ACCESS_EDIT     EditPage        A page content and hooks can be changed.
+ACCESS_ADD      AddPage         New pages can be added ++
+ACCESS_DELETE   DeletePage      A page can be moved, renamed or removed completely.
+ACCESS_ADMIN    AdminPage       Administer the module.
+++ may have to think about AddPage a little more. A user may have AddPage priv
+and be able to create a new page at any location, but then not be able to rename
+or move it once created. I expect the DeletePage privilege will be more useful
+then AddPage, i.e. EditPage is for an editor to manage content and DeletePage
+is for an administrator to manage structure.
+
+The masks for the pagetype component are:
+
+ACCESS_OVERVIEW 
+ACCESS_READ     
+ACCESS_COMMENT  
+ACCESS_MODERATE ModeratePagetype Overview of page type allowed.
+ACCESS_EDIT     EditPagetype    Change description and hooks
+ACCESS_ADD      
+ACCESS_DELETE   
+ACCESS_ADMIN    AdminPagetype   Page types can be added, deleted and renamed.
+
+
+Note: if a user does not have privileges to add or delete a page, then they
+should not be able to move or change the name of that page either.
+
+TODO: do we really need the ID in the instances? Would the name alone be enough?
+
+TODO: some things to make privileges in general easier to set up:-
+
+1. Change the name of the function xarDefineInstance() to xarDefineComponent()
+2. Allow the masks to take a comment field when registering. The database column
+   already seems to be there. (Actually, this is done, but seldom used.) 
+3. Allow the instance query to return two columns: the displayed value and the
+   returned value. An ID alone is often not enough.
+

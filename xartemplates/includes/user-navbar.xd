@@ -1,0 +1,45 @@
+<xar:if condition="xarModGetVar('themes','showusermodheader')">
+    <div class="xar-mod-title"><xar:mlstring>Pages</xar:mlstring></div>
+</xar:if>
+
+<xar:if condition="xarModGetvar('themes','showuserbreadcrumbs')">
+<p class="xar-breadcrumbs">
+    <a href="#xarServerGetBaseURL()#" title="#xarML('Home')#"><xar:mlstring>Home</xar:mlstring></a>
+    <xar:loop name="$ancestors">
+        <xar:if condition="$loop:item.pid eq $pid">
+            &#187;&#160;<span title="#xarVarPrepForDisplay($loop:item.desc)#">#$loop:item.name#</span>
+        <xar:else />
+            &#187;&#160;<a href="#xarModURL('xarpages','user','display',array('pid'=&gt;$loop:item.pid))#" title="#xarVarPrepForDisplay($loop:item.desc)#">#$loop:item.name#</a>
+        </xar:if>
+    </xar:loop>
+</p>
+
+<xar:if condition="!empty($siblings)">
+    <p class="xar-breadcrumbs">
+        <xar:mlstring>Pages in this section:</xar:mlstring>
+        <xar:loop name="$siblings">
+            <xar:if condition="$loop:item.pid eq $pid">
+                <span title="#xarVarPrepForDisplay($loop:item.desc)#">#$loop:item.name#</span>
+            <xar:else />
+                <a href="#xarModURL('xarpages','user','display',array('pid'=&gt;$loop:item.pid))#" title="#xarVarPrepForDisplay($loop:item.desc)#">#$loop:item.name#</a>
+            </xar:if>
+        </xar:loop>
+    </p>
+</xar:if>
+
+<xar:if condition="!empty($children)">
+    <p class="xar-breadcrumbs">
+        <xar:mlstring>Sub-pages:</xar:mlstring>
+        <xar:loop name="$children">
+            <a href="#xarModURL('xarpages','user','display',array('pid'=&gt;$loop:item.pid))#" title="#xarVarPrepForDisplay($loop:item.desc)#">#$loop:item.name#</a>
+        </xar:loop>
+    </p>
+</xar:if>
+</xar:if>
+
+<xar:comment>Add an edit link if required. The crumbtrails block may also provide an edit link. Commented out as it is placed in page-type.xd.</xar:comment>
+<xar:comment>
+<xar:if condition="xarSecurityCheck('EditXarpagesPage', 0, 'Page', $current_page.name . ':' . $current_page.pagetype.name)">
+    [<a href="#xarModURL('xarpages','admin','modifypage',array('pid'=>$pid,'return_url'=>xarServerGetCurrentURL(array(),false)))#">edit</a>]
+</xar:if>
+</xar:comment>

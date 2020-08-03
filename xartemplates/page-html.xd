@@ -1,0 +1,50 @@
+
+<xar:comment>
+    This is a very simple example of a template for the 'html' page type.
+    The HTML body of the page is placed into a dynamicdata field called
+    'body'.
+</xar:comment>
+
+<xar:comment>
+    Set the page title to the description of the page.
+    You could instead create a DD property called 'page_title' and refererence
+    it as $current_page.dd.title, reserving the description field for
+    administration notes.
+</xar:comment>
+<xar:if condition="!empty($current_page.dd.page_title)">
+    <xar:set name="title">#$current_page.dd.page_title#</xar:set>
+<xar:else />
+    <xar:set name="title">#$current_page.desc#</xar:set>
+</xar:if>
+<xar:set name="dummy">xarTplSetPageTitle($title)</xar:set>
+
+<div class="xar-mod-page">
+    <div class="xar-mod-head">
+        <xar:comment>Common navbar stuff</xar:comment>
+        <xar:template file="user-navbar" module="xarpages" />
+    </div>
+    <div class="xar-mod-body">
+        <h1>#$title#
+            <xar:if condition="xarSecurityCheck('EditXarpagesPage', 0, 'Page', $current_page.name . ':' . $current_page.pagetype.name)">
+                <a href="#xarModURL('xarpages','admin','modifypage',array('pid'=>$pid,'return_url'=>xarServerGetCurrentURL(array(),false)))#"
+                   title="" class="esprite xs-modify xar-valign-middle">
+                    <span>&#160;[&#160;<xar:mlstring>Edit</xar:mlstring>&#160;]</span>
+                </a>
+            </xar:if>
+        </h1>
+
+        <xar:if condition="isset($current_page.dd.body)">
+            #$current_page.dd.body#
+        <xar:else />
+            <xar:mlstring>Please create a Dynamic Data item 'body' to hold your HTML</xar:mlstring>
+        </xar:if>
+
+        <xar:if condition="!empty($hooks)">
+            <xar:foreach in="$hooks" key="$hookmodule">
+            <xar:if condition="trim($hooks[$hookmodule]) ne ''">
+            <div>#$hooks[$hookmodule]#</div>
+            </xar:if>
+            </xar:foreach>
+        </xar:if>
+    </div>
+</div>

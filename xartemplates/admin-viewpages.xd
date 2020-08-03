@@ -1,0 +1,119 @@
+<xar:style scope="module" module="xarpages" file="xarpages" />
+<xar:base-include-javascript libname="jquery" libfile="jquery.min" plugin="ui" pluginfile="ui.core.min,ui.dialog.min" style="ui.css" />
+<xar:template file="jq-xarpages-viewpages" module="xarpages" />
+<xar:style file="xgamisprites" module="base" scope="module" />
+<xar:set name="modify"><xar:mlstring>Modify</xar:mlstring></xar:set>
+<xar:set name="delete"><xar:mlstring>Delete</xar:mlstring></xar:set>
+<xar:set name="display"><xar:mlstring>Display</xar:mlstring></xar:set>
+<xar:set name="currenturl">xarServerGetCurrentURL(array(),false)</xar:set>
+
+<div class="xar-mod-page">
+    <div class="xar-mod-head">
+        <xar:if condition="!xarRequestIsAJAX()">
+            <xar:template type="module" module="base" file="admin-menu" />
+        </xar:if>
+    </div>
+    <div class="xar-mod-body">
+        <h1>
+           <xar:mlstring>View pages</xar:mlstring>
+        </h1>
+        <div class="xar-mod-content">
+            <xar:set name="root_pages">#xarModAPIfunc('xarpages', 'user', 'getpages', array('parent'=&gt;0))#</xar:set>
+            <xar:if condition="!empty($root_pages)">
+                <xar:set name="method">'get'</xar:set>
+                <form method="#$method#" action="#xarModURL('xarpages','admin','viewpages')#">
+                    <div>
+                        <xar:if condition="$method eq 'get'">
+                            <input name="module" type="hidden" value="xarpages" />
+                            <input name="type" type="hidden" value="admin" />
+                            <input name="func" type="hidden" value="viewpages" />
+                        </xar:if>
+
+                        <label for="contains"><xar:mlstring>Select tree:</xar:mlstring></label>
+
+                        <select name="contains" id="contains">
+                            <option value="0"><xar:mlstring>-- All --</xar:mlstring></option>
+                            <xar:loop name="$root_pages">
+                                <xar:if condition="$loop:item.pid eq $contains">
+                                    <option value="#$loop:item.pid#" selected="selected">[#$loop:item.pid#] #xarVarPrepForDisplay($loop:item.name)# (#xarVarPrepForDisplay($loop:item.pagetype.name)#)</option>
+                                <xar:else />
+                                    <option value="#$loop:item.pid#">[#$loop:item.pid#] #xarVarPrepForDisplay($loop:item.name)# (#xarVarPrepForDisplay($loop:item.pagetype.name)#)</option>
+                                </xar:if>
+                            </xar:loop>
+                        </select>
+                        <input type="submit" value="#xarML('Refresh')#" />
+                    </div>
+                </form>
+            </xar:if>
+            <xar:if condition="empty($pages)">
+                 <xar:mlstring>NO PAGES DEFINED</xar:mlstring>
+            <xar:else />
+                <p id="checkcontrols" class="xar-valign-bottom xar-floatleft xar-sub"></p>
+                <xar:if condition="!empty($add_allowed)">
+                    <p class="xar-padding-medium xar-floatright"><a class="esprite xs-document-new xar-displayinline" href="#xarModURL('xarpages','admin','modifypage')#"><xar:mlstring>&#160;Add Page</xar:mlstring></a></p>
+                </xar:if>
+                <table class="xar-items" id="pagetreeview">
+                    <thead>
+                        <tr>
+                            <th ><xar:mlstring>Name</xar:mlstring></th>
+                            <th><xar:mlstring>Page Type</xar:mlstring></th>
+                            <th class="xar-align-center"><xar:mlstring>Status</xar:mlstring></th>
+                            <th><xar:mlstring>Description</xar:mlstring></th>
+                            <th class="xar-quarterwidth xar-align-center" style="width:110px;white-space:nowrap"><xar:mlstring>Options</xar:mlstring></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <xar:set name="rowclass">'xar-norm'</xar:set>
+                        <xar:set name="childid">''</xar:set>
+                        <xar:loop name="$pages">
+                            <xar:set name="parentid">$loop->item['parent_pid']>0?$loop->item['parent_pid']:'';</xar:set>
+                            <xar:set name="childid">$loop->item['pid']>0?$loop->item['pid']:'';</xar:set>
+                            <xar:set name="parentclass">$loop->item['parent_pid']>0?"child-of-node-{$loop->item['parent_pid']}":'parent';</xar:set>
+                            <xar:set name="iconclass">!isset($loop->item['has_children']) || ($loop->item['has_children']== 0)?'file':'folder';</xar:set>
+
+                            <xar:if condition="$loop:index ge 0">
+                               <tr data-tt-parent-id="#$parentid#" class="#$rowclass#" data-tt-id="#$childid#">
+                                    <td class="pageitem">
+                                        <span class="js_disabled">#$loop:item.xar_map#</span>
+                                        <span class="#$iconclass#">#xarVarPrepForDisplay($loop:item.name)#</span>
+                                    </td>
+                                    <td>
+                                        <xar:if condition="xarSecurityCheck('EditXarpagesPage', 0, 'Page', $loop:item.name . ':' . $loop:item.pagetype.name)">
+                                            <a title="#xarML('Edit page type')#" href="#xarModURL('xarpages','admin','modifytype', array('ptid'=>$loop:item.pagetype.ptid))#">#xarVarPrepForDisplay($loop:item.pagetype.name)#</a>
+                                        <xar:else />
+                                            #xarVarPrepForDisplay($loop:item.pagetype.name)#
+                                        </xar:if>
+                                    </td>
+                                    <td class="xar-align-center">
+                                        <xar:set name="statetext">ucfirst(strtolower($loop->item['status']))</xar:set>
+                                        <xar:set name="stateaction">$statetext=='Inactive'?xarML('- Click to activate') : ($statetext=='Active'?xarML('- Click to Inactivate'):'')</xar:set>
+                                        <xar:if condition="xarSecurityCheck('EditXarpagesPage', 0, 'Page', $loop:item.name . ':' . $loop:item.pagetype.name) and ($statetext eq 'Inactive' or $statetext eq 'Active')">
+                                            <a class="xar-xarpages-status-#$loop:item.status#" style="text-decoration:none; border-bottom:1px dotted #bcbcbc" title="#$statetext# #$stateaction#" href="#xarModURL('xarpages','admin','changestatus',array('pid'=>$loop:item.pid))#"></a>
+                                        <xar:else />
+                                            <span title="#$statetext# #$stateaction#" class="xar-xarpages-status-#$loop:item.status#"></span>
+                                        </xar:if>
+                                    </td>
+                                    <td>
+                                        #xarVarPrepForDisplay($loop:item.desc)#
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <xar:if condition="!empty($loop:item.edit_allowed)">
+                                            <a  id="modify_#$loop:item['pid']#"  class="esprite xs-modify" href="#xarModURL('xarpages', 'admin', 'modifypage', array('pid' =&gt; $loop:item.pid))#" title="#$modify#"><span>#$modify#</span></a>
+                                        </xar:if>
+                                        &#160;
+                                        <xar:if condition="!empty($loop:item.delete_allowed)">
+                                           <a  class="esprite xs-delete" id="delete_#$loop:item['pid']#" href="#xarModURL('xarpages', 'admin', 'deletepage', array('pid' =&gt; $loop:item.pid, 'authid'=&gt;$authid))#" title="#$delete#"><span>#$delete#</span></a>
+                                        </xar:if>
+                                        &#160;
+                                        <a  class="esprite xs-display" href="#xarModURL('xarpages', 'user', 'display', array('pid' =&gt; $loop:item.pid))#" title="#$display#"><span>#$display#</span></a>
+                                    </td>
+                                </tr>
+                            </xar:if>
+                            <xar:set name="rowclass">$rowclass == 'xar-norm' ? 'xar-accent' : 'xar-norm'</xar:set>
+                        </xar:loop>
+                    </tbody>
+                </table>
+            </xar:if>
+        </div>
+    </div>
+</div>

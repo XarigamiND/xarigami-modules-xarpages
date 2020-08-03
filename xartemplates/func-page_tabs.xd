@@ -1,0 +1,22 @@
+<xar:style scope="module" module="base" file="tabs" />
+
+<div class="xar-xarpages-tabs">
+  <ul  class="xar-tabs xar-alt xar-norm-outline">
+    <xar:loop name="$section_titles">
+      <xar:if condition="$tab eq $loop:index+1">
+        <li class="xar-tab-active"><a class="xar-accent xar-accent-outline" href="#xarServergetCurrentURL(array('tab'=&gt;$loop:index+1))#"><span>#$loop:item#</span></a></li>
+      <xar:else />
+        <li class="xar-tab"><a class="xar-norm xar-norm-outline" href="#xarServergetCurrentURL(array('tab'=&gt;$loop:index+1))#"><span>#$loop:item#</span></a></li>
+      </xar:if>
+    </xar:loop>
+  </ul>
+</div>
+<div style="clear: both;"></div>
+
+<xar:comment>
+   Show just the relevant section.
+   $tab is one-based, and the arrays are zero-based.
+</xar:comment>
+#$sections[$tab-1]#
+
+

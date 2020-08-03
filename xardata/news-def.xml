@@ -1,0 +1,92 @@
+<object name="xarpages_news">
+  <objectid>0</objectid>
+  <label>Xarpages_News</label>
+  <moduleid>160</moduleid>
+  <itemtype>0</itemtype>
+  <urlparam>itemid</urlparam>
+  <maxid>0</maxid>
+  <config></config>
+  <isalias>1</isalias>
+  <properties>
+    <property name="intro_text">
+      <id>157</id>
+      <label>Intro Text</label>
+      <type>xartinymce</type>
+      <default></default>
+      <source>dynamic_data</source>
+      <status>1</status>
+      <order>10</order>
+      <validation></validation>
+    </property>
+    <property name="list_text">
+      <id>57</id>
+      <label>List Text</label>
+      <type>xartinymce</type>
+      <default></default>
+      <source>dynamic_data</source>
+      <status>1</status>
+      <order>20</order>
+      <validation></validation>
+    </property>
+    <property name="item_text">
+      <id>63</id>
+      <label>Item Text</label>
+      <type>xartinymce</type>
+      <default></default>
+      <source>dynamic_data</source>
+      <status>1</status>
+      <order>30</order>
+      <validation></validation>
+    </property>
+    <property name="menu_title">
+      <id>58</id>
+      <label>Menu Title</label>
+      <type>textbox</type>
+      <default></default>
+      <source>dynamic_data</source>
+      <status>1</status>
+      <order>40</order>
+      <validation></validation>
+    </property>
+    <property name="page_title">
+      <id>59</id>
+      <label>Page Title</label>
+      <type>textbox</type>
+      <default></default>
+      <source>dynamic_data</source>
+      <status>1</status>
+      <order>50</order>
+      <validation></validation>
+    </property>
+    <property name="pubtype">
+      <id>62</id>
+      <label>Pubtype</label>
+      <type>itemtype</type>
+      <default></default>
+      <source>dynamic_data</source>
+      <status>1</status>
+      <order>60</order>
+      <validation>articles::1</validation>
+    </property>
+    <property name="mandatory_cat">
+      <id>65</id>
+      <label>Mandatory Cat</label>
+      <type>textbox</type>
+      <default></default>
+      <source>dynamic_data</source>
+      <status>1</status>
+      <order>70</order>
+      <validation></validation>
+    </property>
+    <property name="where_clause">
+      <id>66</id>
+      <label>Where Clause</label>
+      <type>textbox</type>
+      <default></default>
+      <source>dynamic_data</source>
+      <status>1</status>
+      <order>80</order>
+      <validation></validation>
+    </property>
+  </properties>
+</object>

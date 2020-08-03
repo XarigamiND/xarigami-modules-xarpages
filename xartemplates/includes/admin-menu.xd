@@ -1,0 +1,59 @@
+<xar:comment> License: GPL http://www.gnu.org/copyleft/gpl.html </xar:comment>
+<xar:comment>Common Administration menu</xar:comment>
+
+<xar:if condition="xarModGetVar('themes','adminpagemenu')">
+
+    <xar:comment>
+      Simple demonstration of using xml http requests (aka 'ajax'). The xml http
+      request is enabled on the links of the tabs in the admin part, meaning that
+      if you click them, only the chunk of html which is relevant for that tab is
+      retrieved. If you want to see the difference in behaviour, set the condition
+      in the next xar:if statement to false. You will then get the behaviour as if:
+        * normal links were present or
+        * the browser has javascript disabled or
+        * do not support javascript or
+        * do not support xmlhttp requests
+
+      Things to notice for the different behaviour:
+        * speed difference
+        * the url in the address area of your browser
+    </xar:comment>
+
+    <xar:if condition="false">
+        <xar:base-include-javascript filename="xmlhttprequest.js" module="base" position="body"/>
+        <xar:set name="onclick">"return loadContent(this.href,'pageloadwrapper');"</xar:set>
+    <xar:else/>
+        <xar:set name="onclick">"return true;"</xar:set>
+    </xar:if>
+
+    <xar:style scope="module" module="base" file="tabs" />
+
+    <xar:comment>
+      Set a variable that matches the template name. It does not consider template type.
+      If you wanted to look at type of template you would need to check #$request.1#
+      (eg to see if it is admin or user)
+      xarRequestInfo() returns the modulename, type and function in an array for
+      the function we want the third element (i.e. at index 2)
+    </xar:comment>
+    <xar:set name="request">xarRequestGetInfo()</xar:set>
+    <xar:set name="activetab">#$request.2#</xar:set>
+
+    <xar:template type="module" module="base" file="admin-breadcrumb" />
+    <xar:if condition="!empty($menulinks)">
+        <div>
+            <ul  class="xar-tabs">
+                <li class="xar-tabs-label" title="#xarML('Choose an action to perform')#">
+                    <xar:mlstring>Actions:</xar:mlstring>
+                </li>
+                <xar:loop name="$menulinks">
+                    <xar:set name="tabclass">in_array($activetab, $loop->item['active'])?'xar-tab-active':'xar-tab'</xar:set>
+                    <li class="#$tabclass#">
+                        <a title="#$loop:item.title#" href="#$loop:item.url#">
+                            #$loop:item.label#
+                        </a>
+                    </li>
+                </xar:loop>
+            </ul>
+        </div>
+    </xar:if>
+</xar:if>

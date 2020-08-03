@@ -1,0 +1,24 @@
+Version 0.3.5
+    Update treeTable jquery plugin code for version3 compatibility
+Version 0.3.4
+    xarp-000996 Allow passing of page name
+    xarp-000995 Xarpages item template dropdown has no apparent order
+
+Vestion 0.3.2 18 Dec 2011 lakys-xarigami@lakeworks.com
+ - Fix double xar-mod-title in admin view page
+ - Bring new layout (1.4) in some user page type templates
+ - xarp-000999 	dd objects not removed
+
+Version 0.3.1 19 Jun 2011 icedlava@2skies.com
+
+Version 0.3.0 3 Feb 2011 icedlava@2skies.com
+ - remove dependency on categories module as it was never required
+ - fix for php 5.3 with booleans not returning correctly
+
+Version 0.2.9 5 Jan 2010 icedlava@2skies.com
+ - add instances for blocks (can be privilege accessed via Blocks)
+ - fix Add Type validation issue when duplicate or empty name is provided
+ - Add jQuery to admin pages and menu blocks
+ - Redo admin view page table and add separate columns for status, new page type column
+
+

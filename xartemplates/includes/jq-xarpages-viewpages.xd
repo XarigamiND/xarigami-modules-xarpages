@@ -1,0 +1,50 @@
+<xar:base-include-javascript libname="jquery" libfile="jquery.min" plugin="treetable" pluginfile="jquery.treetable" style="stylesheets/jquery.treetable.css" module="xarpages"/>
+<xar:set name="expandall"><xar:mlstring>Expand all</xar:mlstring></xar:set>
+<xar:set name="collapseall"><xar:mlstring>Collapse all</xar:mlstring></xar:set>
+<xar:set name="xarpagescode">"
+jQuery(document).ready(function() {
+    var dialog_width = 300;
+    var dialog_height = 'auto';
+    var expandall = \"$expandall\";
+    var collapseall = \"$collapseall\";
+    jQuery('span[class=js_disabled]').hide();
+    jQuery('#pagetreeview').treetable({
+        expandable: true,
+        clickableNodeNames: true,
+        initialState :'expanded',
+        treeColumn: 0,
+        nodeIdAttr: 'ttId',
+        parentIdAttr: 'ttParentId',
+        indent: 19
+    });
+    jQuery('#"."checkcontrols').append('[ <a href=\"#\" class=\"items_collapsetoggle \" >'+collapseall+'</a> | <a href=\"#\" class=\"items_expandtoggle\" >'+expandall+'</a> ]');
+    jQuery('a.items_collapsetoggle').click(function() {
+        jQuery('#"."pagetreeview').treetable(\"collapseAll\");
+        return false;
+    });
+    jQuery('a.items_expandtoggle').click(function() {
+        jQuery('#"."pagetreeview').treetable(\"expandAll\");
+        return false;
+    });
+    jQuery('#pagetreeview a[id^=delete]').click(function() {
+        var a = this;
+        jQuery('#"."xardialogtarget').remove();
+        jQuery('body').append('" . chr(60) . "div id=\'xardialogtarget\' style=\'display: none;\'" . chr(62) . chr(60) . "/div" . chr(62) . "');
+        jQuery('#" . "xardialogtarget').load(this.getAttribute('href') + '".chr(38)."pageName=module .xar-mod-body ".chr(62)." *').dialog({
+            title: '" . xarML('Delete Page') . "',
+            width: dialog_width,
+            height: dialog_height,
+            buttons: {
+                '". xarML('Cancel') . "': function() { jQuery(this).dialog('close'); },
+                '". xarML('Delete page') . "': function() { jQuery('#"."xardialogtarget form#deletepageform').submit(); }
+            },
+            modal: true,
+            draggable: false,
+            resizable: false
+        });
+        return false;
+    });
+
+});
+"</xar:set>
+<xar:base-include-javascript type="code" code="$xarpagescode" position="head"/>

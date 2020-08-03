@@ -1,0 +1,74 @@
+<xar:base-include-javascript libname="jquery" libfile="jquery.min" plugin="ui" pluginfile="ui.core.min,ui.dialog.min" style="ui.css" />
+<xar:set name="xarpagedelcode">"
+jQuery(document).ready(function() {
+    var dialog_width = 300;
+    var dialog_height = 'auto';
+    jQuery('table.xar-items a[id^=delete]').click(function() {
+        var a = this;
+        jQuery('#"."xardialogtarget').remove();
+        jQuery('body').append('".chr(60)."div id=\'xardialogtarget\' style=\'display: none;\'".chr(62).chr(60)."/div".chr(62)."');
+        jQuery('#" . "xardialogtarget').load(this.getAttribute('href') + '".chr(38)."pageName=module .xar-mod-body ".chr(62)." *').dialog({
+            title: '" . xarML('Delete xarpage type') . "',
+            width: dialog_width,
+            height: dialog_height,
+            buttons: {
+                '". xarML('Cancel') . "': function() { jQuery(this).dialog('close'); },
+                '". xarML('Delete Page Type') . "': function() { a.setAttribute('href', a.getAttribute('href') + '" . chr(38) . "confirm=1');jQuery(this).dialog('close');window.location = a.getAttribute('href'); }
+            },
+            bgiframe: true,
+            modal: true,
+            draggable: false,
+            resizable: false
+        });
+        return false;
+    });
+});
+"</xar:set>
+<xar:base-include-javascript type="code" code="$xarpagedelcode" position="head"/>
+<xar:style scope="module" module="xarpages" file="xarpages" />
+<xar:set name="modify"><xar:mlstring>Modify</xar:mlstring></xar:set>
+<xar:set name="delete"><xar:mlstring>Delete</xar:mlstring></xar:set>
+<div class="xar-mod-page">
+    <div class="xar-mod-head">
+        <xar:if condition="!xarRequestIsAJAX()">
+            <xar:template type="module" module="base" file="admin-menu" />
+        </xar:if>
+    </div>
+    <div class="xar-mod-body">
+        <h1>
+           <xar:mlstring>View Page Types</xar:mlstring>
+        </h1>
+        <div class="xar-mod-content">
+            <xar:if condition="empty($types)">
+                 <xar:mlstring>NO PAGES DEFINED</xar:mlstring>
+            <xar:else />
+                <p class="xar-align-right xar-padding-thick"><a class="esprite xs-add" href="#xarModURL('xarpages','admin','newtype')#"><xar:mlstring>&#160;Add Page Type</xar:mlstring></a></p>
+
+                <table class="xar-items">
+                    <tr>
+                        <th><xar:mlstring>Name</xar:mlstring></th>
+                        <th><xar:mlstring>Description</xar:mlstring></th>
+                        <th><xar:mlstring>Options</xar:mlstring></th>
+                    </tr>
+                    <xar:set name="rowclass">'xar-norm'</xar:set>
+                    <xar:loop name="$types">
+                        <xar:if condition="$loop:index ge 0">
+                            <tr class="#$rowclass#">
+                                <td>
+                                    #xarVarPrepForDisplay($loop:item['name'])#
+                                </td>
+                                <td>#xarVarPrepForDisplay($loop:item['desc'])#</td>
+                                <td class="xar-align-center">
+                                    <a  id="modify_#$loop:item['ptid']#"  class="esprite xs-modify" href="#xarModURL('xarpages', 'admin', 'modifytype', array('ptid' => $loop:item['ptid']))#" title="#$modify#"><span>#$modify#</span></a>
+                                    &#160;
+                                    <a  class="esprite xs-delete" id="delete_#$loop:item['ptid']#" href="#xarModURL('xarpages', 'admin', 'deletetype', array('ptid' => $loop:item['ptid'],'authid' => $authid))#" title="#$delete#"><span>#$delete#</span></a>
+                                </td>
+                            </tr>
+                        </xar:if>
+                        <xar:set name="rowclass">$rowclass == 'xar-norm' ? 'xar-accent' : 'xar-norm'</xar:set>
+                    </xar:loop>
+                </table>
+            </xar:if>
+        </div>
+    </div>
+</div>
