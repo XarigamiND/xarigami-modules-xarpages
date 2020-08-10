@@ -145,8 +145,19 @@
               <p>See the <a href="modules/xarpages/xardocs/TODO.txt">TODO.txt</a> file in the documentation set of this module for a full list.</p>
               <p>The main missing functionality at this point are an import/export function, which would also be used to setup initial sample pages, and blocks to display hierarchical menus based on the current page and its position in the hierarchy.</p>
               <h2>Author</h2>
-              <p>Jason Judge</p>
-              <p><a href="mailto:judgej@xaraya.com">judgej@xaraya.com</a></p>
+              <p>Jason Judge <a href="mailto:judgej@xaraya.com">judgej@xaraya.com</a></p>
+              <h3>
+                    <xar:mlstring>Further Information</xar:mlstring>
+                </h3>
+                <ul>
+                    <li><a href="http://xarigami.org/project/xarigami_xarpages"><xar:mlstring>Xarigami XarPages project page</xar:mlstring></a></li>
+                    <li><a href="http://xarigami.org/contrails/displayproject/xarp"><xar:mlstring>Xarigami XarCacheManager issue tracker</xar:mlstring></a></li>
+                    </li>
+                </ul>
+                <p class="xar-sub">
+                    <strong>&#160;<xar:mlstring>xarpages Overview</xar:mlstring></strong><br />&#160;<xar:mlstring>Version</xar:mlstring> 0.3.5&#160; 2009
+                </p>
+
             </div>
         </div>
     </div>
